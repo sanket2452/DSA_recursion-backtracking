@@ -1,0 +1,31 @@
+class Solution {
+public:
+    void find(int ind, int n, string s, string &ds, vector<string> &ans){
+        if(ind==n){
+            ans.push_back(ds);
+            return;
+        }
+        if(s[ind]>='a'&&s[ind]<='z'){
+            ds+=toupper(s[ind]);
+            find(ind+1, n, s, ds, ans);
+            ds.erase(ds.begin()+ind);
+        }
+        else if(s[ind]>='A'&&s[ind]<='Z'){
+            ds+=tolower(s[ind]);
+            find(ind+1, n, s, ds, ans);
+            ds.erase(ds.begin()+ind);
+        }
+        ds+=s[ind];
+        find(ind+1, n, s, ds, ans);
+        ds.erase(ds.begin()+ind);
+
+    }
+    vector<string> letterCasePermutation(string s) {
+        vector<string> ans;
+        int n=s.size();
+        string ds="";
+        find(0, n, s, ds, ans);
+        return ans;
+
+    }
+};
