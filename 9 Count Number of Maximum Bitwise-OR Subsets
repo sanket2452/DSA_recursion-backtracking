@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int cnt=0;
+    void find(int ind, int sum, int &maxi, vector<int> nums){
+        if(ind==nums.size()){
+            if(maxi<sum){
+                maxi=sum;
+                cnt=0;
+            }
+            if(maxi==sum) cnt++;
+            return;
+        }
+        
+        find(ind+1, sum|nums[ind], maxi, nums);
+        find(ind+1, sum, maxi, nums);
+    }
+    int countMaxOrSubsets(vector<int>& nums) {
+        int maxi=INT_MIN;
+        find(0, 0, maxi, nums);
+        return cnt;
+
+    }
+};
