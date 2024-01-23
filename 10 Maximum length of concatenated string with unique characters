@@ -1,0 +1,80 @@
+class Solution {
+public:
+    
+    int maxLength(vector<string>& arr) {
+        int ans=0;
+        int n=arr.size();
+        for(int i=0;i<(1<<n);i++){
+            int cur_ans=0;
+            vector<int> f(26, 0);
+
+            for(int j=0;j<n;j++){
+                if((i>>j)&1){
+                    cur_ans+=arr[j].size();
+
+                    for(auto x: arr[j])
+                        f[x-'a']++;
+                }
+            }
+            bool fl=1;
+            for(auto x: f){
+                if(x>1){
+                    fl=0;
+                    break;
+                }
+            }
+            if(fl) ans=max(ans, cur_ans);
+        }
+        return ans;
+    }
+};
+______________________________________________________________________________________________________________________________________________________
+
+class Solution {
+public:
+    bool isValid(string &curr, unordered_map<char, int> &mp){
+        unordered_map<char, int> temp;
+        for(auto it: curr){
+            temp[it]++;
+            if(mp[it]==1 || temp[it]>1) return false;
+            
+            
+        }
+        return true;
+    }
+    void find(int ind, string &ds, int &maxlen, unordered_map<char, int> &mp, vector<string> &arr){
+        int len=ds.size();
+        maxlen=max(maxlen, len);
+        if(ind==arr.size()) return;
+
+        for(int index=ind;index<arr.size();index++){
+            string curr=arr[index];
+            if(isValid(curr, mp)){
+                int i=0;
+                while(i<curr.size()){
+                    ds.push_back(curr[i]);
+                    mp[curr[i]]++;
+                    i++;
+                }
+                find(index+1, ds, maxlen, mp, arr);
+
+                //backtrack
+                i=curr.size();
+                while(i--){
+                    ds.pop_back();
+                    mp[curr[i]]--;
+                }
+            }
+        }
+        
+    }
+    int maxLength(vector<string>& arr) {
+        int maxlen=0;
+        unordered_map<char, int> mp;
+        string s="";
+        find(0, s, maxlen, mp, arr);
+        return maxlen;
+    }
+
+};
+        
